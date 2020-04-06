@@ -1,18 +1,19 @@
 package com.ravimhzn.infosyscodingapplication.ui.di
 
 
+import com.ravimhzn.infosyscodingapplication.network.ApiService
 import dagger.Module
+import dagger.Provides
+import retrofit2.Retrofit
+import javax.inject.Singleton
 
 
 @Module
 class MainModule {
-//    @Provides
-//    fun providePostAPI(retrofit: Retrofit): PostAPI {
-//        return retrofit.create(PostAPI::class.java)
-//    }
-//
-//    @Provides
-//    fun provideAdapter(): PostRecyclerAdapter {
-//        return PostRecyclerAdapter()
-//    }
+
+    @Singleton
+    @Provides
+    fun provideApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
 }

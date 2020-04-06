@@ -9,7 +9,7 @@
         android:id="@+id/splashScreen"
         android:name="com.ravimhzn.infosyscodingapplication.ui.fragments.SplashScreen"
         android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" >
+        tools:layout="@layout/fragment_splash_screen">
         <action
             android:id="@+id/action_splashScreen_to_aboutFrag"
             app:destination="@id/aboutFrag" />

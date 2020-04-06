@@ -3,4 +3,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    Error Handling Messages-->
+    <string name="no_connection">No connection</string>
+    <string name="check_your_connection">It seems that you’re not connected to the internet. Please check your phone and try again.</string>
+    <string name="try_again">Try Again</string>
+    <string name="unknown_error_message">Oops, it seems we are having a problem loading this content right now</string>
+    <string name="no_data_available">There are no data to show at the moment</string>
 </resources>

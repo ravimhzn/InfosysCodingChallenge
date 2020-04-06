@@ -1,6 +1,8 @@
 package com.ravimhzn.infosyscodingapplication.di
 
-import com.ravimhzn.starwars.utils.Constants
+import android.app.Application
+import android.content.Context
+import com.ravimhzn.infosyscodingapplication.utils.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -10,7 +12,15 @@ import javax.inject.Singleton
 
 
 @Module
-class AppModule {
+class AppModule(private val application: Application) {
+
+    @Provides
+    @Singleton
+    fun providesApplication(): Application = application
+
+    @Singleton
+    @Provides
+    fun provideContext(): Context = application
 
     @Singleton
     @Provides
