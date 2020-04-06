@@ -1,0 +1,3 @@
+package com.ravimhzn.infosyscodingapplication.di
+
+interface Injectable
