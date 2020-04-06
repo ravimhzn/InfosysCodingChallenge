@@ -4,32 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.ravimhzn.infosyscodingapplication.R
-import com.ravimhzn.infosyscodingapplication.ui.adapter.AboutRecyclerAdapter
-import com.ravimhzn.infosyscodingapplication.ui.model.CountryInfoDataModel
-import com.ravimhzn.infosyscodingapplication.ui.model.Row
-import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutFragViewModel
-import com.ravimhzn.infosyscodingapplication.utils.data.map
+import com.ravimhzn.infosyscodingapplication.databinding.FragmentAboutBinding
+import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutFragListViewModel
 import com.ravimhzn.openweatherapp.modules.BaseFragment
-import kotlinx.android.synthetic.main.fragment_about.*
 import javax.inject.Inject
 
-
+/**
+ * We will only use Rx for this fragment
+ */
 class AboutFrag : BaseFragment() {
+
+    private lateinit var binding: FragmentAboutBinding
+    private var errorSnackbar: Snackbar? = null
+    private var status: Boolean? = false
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: AboutFragViewModel by viewModels { viewModelFactory }
-
-    private var status: Boolean? = false
-
-    @Inject
-    lateinit var aboutRecyclerAdapter: AboutRecyclerAdapter
+    private val viewModel: AboutFragListViewModel by viewModels { viewModelFactory }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,35 +41,41 @@ class AboutFrag : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
         if (status!!) {
-            startObservingForData()
+            showError(R.string.no_connection)
         }
+        initRecyclerView()
+        startObserver()
+    }
+
+    private fun startObserver() {
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+            if (errorMessage != null) showError(errorMessage) else hideError()
+        })
+        binding.viewModel = viewModel
     }
 
     private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = aboutRecyclerAdapter
+        binding.recyclerList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun startObservingForData() {
-        viewModel.countryResult.removeObservers(viewLifecycleOwner)
-        viewModel.countryResult.observe(viewLifecycleOwner, Observer { it ->
-            it.map {
-                setUpViews(it)
-            }
-        })
+    private fun showError(@StringRes errorMessage: Int) {
+        errorSnackbar = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        errorSnackbar?.setAction(R.string.retry, viewModel.errorClickListener)
+        errorSnackbar?.show()
     }
 
-    private fun setUpViews(countryData: CountryInfoDataModel) {
-        countryData.rows?.let { aboutRecyclerAdapter.setCountryInfo(it as List<Row>) }
+    private fun hideError() {
+        errorSnackbar?.dismiss()
     }
+
 
     companion object {
         private const val BUNDLE_KEY_TITLE = "network"

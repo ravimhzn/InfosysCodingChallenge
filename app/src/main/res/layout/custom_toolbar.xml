@@ -5,6 +5,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:orientation="horizontal"
+    android:paddingLeft="@dimen/default_dimen"
     android:paddingTop="@dimen/small_dimen">
 
 
@@ -13,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="@dimen/title_size"

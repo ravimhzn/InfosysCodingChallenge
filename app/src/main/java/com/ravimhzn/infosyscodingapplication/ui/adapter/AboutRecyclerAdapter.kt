@@ -1,18 +1,17 @@
 package com.ravimhzn.infosyscodingapplication.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ravimhzn.infosyscodingapplication.R
-import com.ravimhzn.infosyscodingapplication.extension.setImageUrl
+import com.ravimhzn.infosyscodingapplication.databinding.CustomListViewBinding
 import com.ravimhzn.infosyscodingapplication.ui.model.Row
+import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutRecyclerAdapterViewModel
 
 class AboutRecyclerAdapter : RecyclerView.Adapter<AboutRecyclerAdapter.AboutViewHolder>() {
 
-    private var arrRow: List<Row> = ArrayList()
+    private lateinit var arrRow: List<Row>
 
     fun setCountryInfo(arrRow: List<Row>) {
         if (arrRow != null) {
@@ -22,37 +21,28 @@ class AboutRecyclerAdapter : RecyclerView.Adapter<AboutRecyclerAdapter.AboutView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AboutViewHolder {
-        return AboutViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.custom_list_view, parent, false)
+        val binding: CustomListViewBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.custom_list_view, parent, false
         )
+        return AboutViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return arrRow.size
+        return if (::arrRow.isInitialized) arrRow.size else 0
     }
 
     override fun onBindViewHolder(holder: AboutViewHolder, position: Int) {
         holder.bind(arrRow[position])
     }
 
-    class AboutViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        private var title: TextView =
-            itemView.findViewById(R.id.tvTitle)
-
-        private var description: TextView =
-            itemView.findViewById(R.id.tvDescription)
-
-        private var imageView: ImageView =
-            itemView.findViewById(R.id.imageNews)
+    class AboutViewHolder(private val binding: CustomListViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val viewModel = AboutRecyclerAdapterViewModel()
 
         fun bind(row: Row) {
-            row?.let {
-                title.text = it.title
-                description.text = it.description
-                imageView.setImageUrl(it.imageHref)
-            }
+            viewModel.bind(row)
+            binding.viewModel = viewModel
         }
     }
 }

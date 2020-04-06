@@ -2,6 +2,7 @@ package com.ravimhzn.infosyscodingapplication.ui.di
 
 
 import com.ravimhzn.infosyscodingapplication.network.ApiService
+import com.ravimhzn.infosyscodingapplication.persistence.CountryInfoDao
 import com.ravimhzn.infosyscodingapplication.ui.adapter.AboutRecyclerAdapter
 import com.ravimhzn.infosyscodingapplication.ui.repo.CountryDataSource
 import com.ravimhzn.infosyscodingapplication.ui.repo.CountryRemoteDataSource
@@ -32,5 +33,10 @@ class MainModule {
     fun provideRecyclerAdapter(): AboutRecyclerAdapter {
         return AboutRecyclerAdapter()
     }
+
+//    @Provides
+//    fun provideCountryInfoDao(): CountryInfoDao {
+//        return
+//    }
 
 }
