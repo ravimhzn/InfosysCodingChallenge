@@ -10,8 +10,25 @@ data class CountryInfo(
      */
     fun toCountryInfoDataModel(): CountryInfoDataModel {
         return CountryInfoDataModel(
-            rows = rows,
-            title = title
+            rows = toRows(),
+            appBarTitle = title
         )
     }
+
+    private fun toRows() =
+        this.rows?.filter { it?.let { it1 -> checkIfTitleNull(it1) }!! }
+
+
+    /**
+     * Filtering list. Checking if there are null
+     */
+    private fun checkIfTitleNull(it: Row): Boolean {
+        return it?.title != null && it?.description != null && it?.imageHref != null
+    }
 }
+
+data class Row(
+    val description: String? = null,
+    val imageHref: String? = null,
+    val title: String? = null
+)

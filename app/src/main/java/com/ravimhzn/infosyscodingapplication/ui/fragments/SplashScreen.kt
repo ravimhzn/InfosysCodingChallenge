@@ -43,21 +43,21 @@ class SplashScreen : BaseFragment() {
 
     private fun startObserving() {
         viewModel.navigateToNextScreen.observe(viewLifecycleOwner, EventObserver {
-            navigateToAboutFrag()
+            navigateToAboutFrag(true)
         })
 
         viewModel.connectionErrorMessage.observe(viewLifecycleOwner, Observer { noConnection ->
             if (noConnection)
             //TODO
                 Toast.makeText(context, "No internet connection", Toast.LENGTH_LONG).show()
-            navigateToAboutFrag()
+            navigateToAboutFrag(false)
         })
     }
 
-    private fun navigateToAboutFrag() {
+    private fun navigateToAboutFrag(status: Boolean) {
         navigate(
             actionId = R.id.action_splashScreen_to_aboutFrag,
-            bundle = null
+            bundle = AboutFrag.toBundle(status)
         )
     }
 }
