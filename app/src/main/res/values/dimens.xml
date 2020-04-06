@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="titleText">20sp</dimen>
+    <dimen name="bodyText">14sp</dimen>
+    <dimen name="default_dimen">16dp</dimen>
+    <dimen name="small_dimen">8dp</dimen>
+    <dimen name="imageWidth">100dp</dimen>
+    <dimen name="imageHeight">60dp</dimen>
+    <dimen name="title_size">14sp</dimen>
+</resources>

@@ -2,6 +2,10 @@ package com.ravimhzn.infosyscodingapplication.di
 
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
+import com.ravimhzn.infosyscodingapplication.persistence.CountryDatabase
+import com.ravimhzn.infosyscodingapplication.persistence.CountryDatabase.Companion.DATABASE_NAME
+import com.ravimhzn.infosyscodingapplication.persistence.CountryInfoDao
 import com.ravimhzn.infosyscodingapplication.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -35,5 +39,21 @@ class AppModule(private val application: Application) {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create()) //To support RxJava calls via Retrofit
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideNoteDatabase(application: Application): CountryDatabase {
+        return Room.databaseBuilder(
+            application,
+            CountryDatabase::class.java,
+            DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()// get correct db version if schema changed
+    }
+
+    @Singleton
+    @Provides
+    fun provideNoteDao(countryDatabase: CountryDatabase): CountryInfoDao {
+        return countryDatabase.getCountryDetailsFromDb_Dao()
     }
 }

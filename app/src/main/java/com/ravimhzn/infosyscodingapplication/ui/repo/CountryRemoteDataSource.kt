@@ -22,5 +22,4 @@ class CountryRemoteDataSource @Inject constructor(
         )
         return resultLiveData
     }
-
 }
