@@ -1,9 +1,9 @@
 # InfosysCodingChallenge
 
 ## App Goal:
-A list of the information about a country "Canada" in this case.
-The main objective of this application is to keep the data in our local database so that
-we could display even when there is no internet. Currently this app has only two screens/ fragments as demanded by coding challenge.
+The application has been built with offline support. It has been designed using Android Architecture components with Room for offline data caching. The application is built in such a way that whenvever there is a service call, the result will be stored in local database.
+
+The whole application is built based on the MVVM architectural pattern.
 
 ## Project specifications
 
@@ -50,12 +50,9 @@ Project features:
 
 ## Design patterns:
 ### MVVM:
-MVVM stands for “Model View ViewModel”, and it’s a software architecture often used by Apple developers to replace MVC. Model-View-ViewModel (MVVM) is a structural design pattern that separates objects into three distinct groups:
-- Models hold application data. They’re usually structs or simple classes.
-- Views display visual elements and controls on the screen. They’re typically - subclasses of UIView.
-- View models transform model information into values that can be displayed on a view. They’re usually classes, so they can be passed around as references.
+MVVM stands for “Model View ViewModel”. The main advatage of using MVVM, there is no two way dependency between ViewModel and Model unlike MVP/ MVC. Here the view can observe the datachanges in the viewmodel as we are using LiveData which is lifecycle aware. We're also using RxJava/ RxAndroid as demanded by question. The viewmodel to view communication is achieved through observer pattern (basically observing the state changes of the data in the viewmodel).
 
-<img src="screenshotss/MVVM.jpeg">
+<img src="screenshots/chart.png">
 
 
  ## TODO:
