@@ -21,7 +21,6 @@ class AboutRecyclerAdapterViewModel @Inject constructor() :
     }
 
     companion object {
-
         /**
          * This methods should not have any return type, = declaration would make it return that object declaration.
          */
@@ -29,7 +28,7 @@ class AboutRecyclerAdapterViewModel @Inject constructor() :
         @BindingAdapter("imageUrl")
         fun loadImage(
             view: ImageView,
-            url: String
+            url: String?
         ) {
             if (!url.isNullOrEmpty()) {
                 Glide.with(view.context).load(url).into(view)

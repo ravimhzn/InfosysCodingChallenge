@@ -19,7 +19,10 @@ Project features:
 
 ## Project Used:
 * Android Studio 3.6.1
-* Kotlin Version 1.3.71.
+* Kotlin Version 1.3.71
+* Gradle Build Version 3.6.1
+* Android Version 10
+* JVM 1.8
 
 ## Libraries used
 

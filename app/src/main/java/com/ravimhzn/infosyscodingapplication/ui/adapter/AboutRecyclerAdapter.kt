@@ -14,9 +14,7 @@ class AboutRecyclerAdapter : RecyclerView.Adapter<AboutRecyclerAdapter.AboutView
     private lateinit var arrRow: List<Row>
 
     fun setCountryInfo(arrRow: List<Row>) {
-        if (arrRow != null) {
-            this.arrRow = arrRow
-        }
+        this.arrRow = arrRow
         notifyDataSetChanged()
     }
 
