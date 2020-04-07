@@ -54,6 +54,6 @@ class AppModule(private val application: Application) {
     @Singleton
     @Provides
     fun provideNoteDao(countryDatabase: CountryDatabase): CountryInfoDao {
-        return countryDatabase.getCountryDetailsFromDb_Dao()
+        return countryDatabase.getCountryDetailsFromDbDao()
     }
 }

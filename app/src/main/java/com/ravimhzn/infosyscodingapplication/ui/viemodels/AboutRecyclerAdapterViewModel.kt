@@ -31,7 +31,6 @@ class AboutRecyclerAdapterViewModel @Inject constructor() :
             view: ImageView,
             url: String
         ) {
-            println("debug -> $url")
             if (!url.isNullOrEmpty()) {
                 Glide.with(view.context).load(url).into(view)
             }

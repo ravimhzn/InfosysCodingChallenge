@@ -48,13 +48,7 @@ class AboutFragListViewModel @Inject constructor(
             if (!isInternetConnected())
                 Observable.just(dbCountryInfoList)
             else
-                apiService.getCountryPosts().map {
-                    it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
-                }.concatMap { apiList ->
-                    countryInfoDao.deleteAll()
-                    countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
-                    Observable.just(apiList)
-                }
+                getInfoListFromServer()
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -64,6 +58,17 @@ class AboutFragListViewModel @Inject constructor(
                 { result -> onRetrieveCounryListSuccess(result as List<Row>) },
                 { onRetrievePostListError() }
             )
+    }
+
+
+    fun getInfoListFromServer(): Observable<List<Row?>>? {
+        return apiService.getCountryPosts().map {
+            it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
+        }.concatMap { apiList ->
+            countryInfoDao.deleteAll()
+            countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
+            Observable.just(apiList)
+        }
     }
 
     /**
