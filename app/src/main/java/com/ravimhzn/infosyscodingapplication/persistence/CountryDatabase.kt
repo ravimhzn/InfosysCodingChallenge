@@ -8,8 +8,8 @@ import com.ravimhzn.infosyscodingapplication.ui.model.Row
 abstract class CountryDatabase : RoomDatabase() {
 
     companion object {
-        val DATABASE_NAME: String = "country_db"
+        const val DATABASE_NAME: String = "country_db"
     }
 
-    abstract fun getCountryDetailsFromDb_Dao(): CountryInfoDao
+    abstract fun getCountryDetailsFromDbDao(): CountryInfoDao
 }

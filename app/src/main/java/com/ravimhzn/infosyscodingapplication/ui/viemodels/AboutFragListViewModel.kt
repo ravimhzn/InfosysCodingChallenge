@@ -22,8 +22,10 @@ class AboutFragListViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    /**
+     * LiveData observers for DataBinding
+     */
     val aboutRecyclerAdapter: AboutRecyclerAdapter = AboutRecyclerAdapter()
-
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val appBarTitle: MutableLiveData<String> = MutableLiveData()
@@ -39,7 +41,8 @@ class AboutFragListViewModel @Inject constructor(
 
     /**
      * If there is no internet connection, this function will load data from local database
-     * otherwise it will load data from api service
+     * otherwise it will load data from api service.
+     * Alternatively, we can use multiple threads to handle this operation. In this case, it's okay to handle it with one.
      */
     private fun loadData() {
         subscription = Observable.fromCallable {
@@ -48,13 +51,7 @@ class AboutFragListViewModel @Inject constructor(
             if (!isInternetConnected())
                 Observable.just(dbCountryInfoList)
             else
-                apiService.getCountryPosts().map {
-                    it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
-                }.concatMap { apiList ->
-                    countryInfoDao.deleteAll()
-                    countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
-                    Observable.just(apiList)
-                }
+                getInfoListFromServer()
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -66,8 +63,22 @@ class AboutFragListViewModel @Inject constructor(
             )
     }
 
+
     /**
-     * Filtering list. Checking if there are null
+     * Save data from server to Room Table
+     */
+    fun getInfoListFromServer(): Observable<List<Row?>>? {
+        return apiService.getCountryPosts().map {
+            it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
+        }.concatMap { apiList ->
+            countryInfoDao.deleteAll()
+            countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
+            Observable.just(apiList)
+        }
+    }
+
+    /**
+     * Filtering list. Checking if there are null and filter out.
      */
     fun checkIfValuesNotNull(it: Row): Boolean {
         return it?.title != null && it?.description != null && it?.imageHref != null

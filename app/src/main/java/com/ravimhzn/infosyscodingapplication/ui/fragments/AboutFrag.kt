@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import javax.inject.Inject
 
 /**
- * Using only Rx for this fragment
+ * We will use LiveData and Rx with this fragment. It will Display the list of Json object.
  */
 class AboutFrag : BaseFragment() {
 
