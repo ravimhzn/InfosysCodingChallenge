@@ -13,7 +13,7 @@ Project features:
 * [Android Jetpack](https://developer.android.com/jetpack) (ViewModel, LiveData, Lifecycle)
 * Clean architecture
 * Data Binding
-* Reactive Programming (RxJava and LiveData)
+* Reactive Programming (RxJava and RxAndroid)
 * Dagger2 Dependency injection (service locator)
 * JUnit4 and Mockito Test
 
