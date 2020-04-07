@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.ravimhzn.infosyscodingapplication.R
 import com.ravimhzn.infosyscodingapplication.databinding.FragmentAboutBinding
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutFragListViewModel
 import com.ravimhzn.openweatherapp.modules.BaseFragment
+import kotlinx.android.synthetic.main.fragment_about.*
 import javax.inject.Inject
 
 /**
@@ -24,7 +26,7 @@ class AboutFrag : BaseFragment() {
 
     private lateinit var binding: FragmentAboutBinding
     private var errorSnackbar: Snackbar? = null
-    private var status: Boolean? = false
+    private var status: Boolean = false
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -34,7 +36,7 @@ class AboutFrag : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        status = fromBundle(this).networkStatus
+        status = fromBundle(this).networkStatus!!
     }
 
     override fun onCreateView(
@@ -47,11 +49,18 @@ class AboutFrag : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (status!!) {
+        if (status) {
             showError(R.string.no_connection)
         }
+        initToolbar()
         initRecyclerView()
         startObserver()
+    }
+
+    private fun initToolbar() {
+        layout_refresh.setOnClickListener {
+            startObserver()
+        }
     }
 
     private fun startObserver() {
@@ -76,6 +85,9 @@ class AboutFrag : BaseFragment() {
         errorSnackbar?.dismiss()
     }
 
+    private fun showToastError(@StringRes msg: Int) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    }
 
     companion object {
         private const val BUNDLE_KEY_TITLE = "network"

@@ -1,4 +1,4 @@
-package com.ravimhzn.starwars.utils
+package com.ravimhzn.infosyscodingapplication.utils
 
 import android.graphics.Rect
 import android.view.View

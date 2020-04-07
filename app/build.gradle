@@ -137,4 +137,3 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.room_version"
 
 }
-

@@ -14,7 +14,7 @@
             android:id="@+id/action_splashScreen_to_aboutFrag"
             app:destination="@id/aboutFrag"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/aboutFrag"
+            app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment

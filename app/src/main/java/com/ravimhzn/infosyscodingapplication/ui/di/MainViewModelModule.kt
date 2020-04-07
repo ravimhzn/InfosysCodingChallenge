@@ -26,5 +26,4 @@ abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(AboutRecyclerAdapterViewModel::class)
     abstract fun bindAboutRecyclerAdapterViewModel(aboutRecyclerAdapterViewModel: AboutRecyclerAdapterViewModel): ViewModel
-
 }

@@ -1,5 +1,6 @@
 package com.ravimhzn.infosyscodingapplication.persistence
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -13,4 +14,10 @@ interface CountryInfoDao {
 
     @get:Query("SELECT * FROM country_details")
     val getCountryDetailsFromDb: List<Row>
+
+    @Query("SELECT * FROM country_details")
+    fun getAllList(): LiveData<List<Row>>
+
+    @Query("DELETE FROM country_details")
+    fun deleteAll()
 }

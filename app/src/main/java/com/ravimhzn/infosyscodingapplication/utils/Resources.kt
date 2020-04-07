@@ -1,4 +1,4 @@
-package com.ravimhzn.starwars.utils
+package com.ravimhzn.infosyscodingapplication.utils
 
 
 sealed class Resources<T>(
