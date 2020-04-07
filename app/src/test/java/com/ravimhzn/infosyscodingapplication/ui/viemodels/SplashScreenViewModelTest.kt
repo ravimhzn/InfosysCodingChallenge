@@ -4,9 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.ravimhzn.infosyscodingapplication.utils.NetworkUtil
-import org.junit.Assert
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -51,8 +49,8 @@ class SplashScreenViewModelTest {
         val viewModel = SplashScreenViewModel(
             networkUtil = mock { on { isInternetAvailable() } doReturn true }
         )
-        Assert.assertTrue(viewModel.isInternetConnected())
-        Assert.assertTrue(viewModel.checkInternetConnection())
+        assertTrue(viewModel.isInternetConnected())
+        assertTrue(viewModel.checkInternetConnection())
     }
 
     @Test
@@ -60,7 +58,29 @@ class SplashScreenViewModelTest {
         val viewModel = SplashScreenViewModel(
             networkUtil = mock { on { isInternetAvailable() } doReturn false }
         )
-        Assert.assertFalse(viewModel.isInternetConnected())
-        Assert.assertFalse(viewModel.checkInternetConnection())
+        assertFalse(viewModel.isInternetConnected())
+        assertFalse(viewModel.checkInternetConnection())
     }
+
+    @Test
+    fun `checkConnectionAndNavigate when you have internet connection`() {
+        val viewModel = SplashScreenViewModel(
+            networkUtil = mock { on { isInternetAvailable() } doReturn true }
+        )
+        viewModel.checkConnectionAndNavigate()
+        viewModel.navigateToNextScreen.observeForever {}
+        assertNotNull(viewModel.navigateToNextScreen.value)
+    }
+
+    @Test
+    fun `checkConnectionAndNavigate when you don't have internet connection`() {
+        val viewModel = SplashScreenViewModel(
+            networkUtil = mock { on { isInternetAvailable() } doReturn false }
+        )
+        viewModel.checkConnectionAndNavigate()
+        viewModel.navigateToNextScreen.observeForever {}
+        assertNull(viewModel.navigateToNextScreen.value)
+    }
+
+
 }
