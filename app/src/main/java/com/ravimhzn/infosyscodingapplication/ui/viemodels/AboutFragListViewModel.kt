@@ -31,6 +31,9 @@ class AboutFragListViewModel @Inject constructor(
     private lateinit var subscription: Disposable
 
     init {
+        if (!isInternetConnected()) {
+            errorMessage.value = R.string.no_connection
+        }
         loadData()
     }
 
@@ -42,14 +45,17 @@ class AboutFragListViewModel @Inject constructor(
         subscription = Observable.fromCallable {
             countryInfoDao.getCountryDetailsFromDb
         }.concatMap { dbCountryInfoList ->
-            apiService.getCountryPosts().map {
-                it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
-            }.concatMap { apiList ->
-                countryInfoDao.deleteAll()
-                countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
-                Observable.just(apiList)
-            }
-            Observable.just(dbCountryInfoList)
+            if (!isInternetConnected())
+                Observable.just(dbCountryInfoList)
+            else
+                apiService.getCountryPosts().map {
+                    appBarTitle.value = it.title
+                    it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
+                }.concatMap { apiList ->
+                    countryInfoDao.deleteAll()
+                    countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
+                    Observable.just(apiList)
+                }
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -64,7 +70,7 @@ class AboutFragListViewModel @Inject constructor(
     /**
      * Filtering list. Checking if there are null
      */
-    private fun checkIfValuesNotNull(it: Row): Boolean {
+    fun checkIfValuesNotNull(it: Row): Boolean {
         return it?.title != null && it?.description != null && it?.imageHref != null
     }
 
@@ -79,7 +85,7 @@ class AboutFragListViewModel @Inject constructor(
 
     private fun onRetrieveCounryListSuccess(postList: List<Row>) {
         aboutRecyclerAdapter.setCountryInfo(postList)
-        appBarTitle.value = "About Canada"
+        //appBarTitle.value = "About Canada"
     }
 
     private fun onRetrievePostListError() {
@@ -92,14 +98,6 @@ class AboutFragListViewModel @Inject constructor(
     }
 
     /**
-     * Checks if the device is connected to an internet. Put the result in the corresponding observable.
-     */
-    fun checkInternetConnection(): Boolean {
-        val connected = isInternetConnected()
-        return connected
-    }
-
-    /**
      * Check if the device has an internet connection.
      *
      * @return true if device is connected to internet. Otherwise false.
@@ -107,6 +105,4 @@ class AboutFragListViewModel @Inject constructor(
     fun isInternetConnected(): Boolean {
         return networkUtil.isInternetAvailable()
     }
-
-
 }

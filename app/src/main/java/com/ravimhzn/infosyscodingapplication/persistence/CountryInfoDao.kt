@@ -15,9 +15,6 @@ interface CountryInfoDao {
     @get:Query("SELECT * FROM country_details")
     val getCountryDetailsFromDb: List<Row>
 
-    @Query("SELECT * FROM country_details")
-    fun getAllList(): LiveData<List<Row>>
-
     @Query("DELETE FROM country_details")
     fun deleteAll()
 }

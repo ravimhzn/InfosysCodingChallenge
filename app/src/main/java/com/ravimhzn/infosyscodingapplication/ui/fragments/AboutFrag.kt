@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import javax.inject.Inject
 
 /**
- * We will only use Rx for this fragment
+ * Using only Rx for this fragment
  */
 class AboutFrag : BaseFragment() {
 
