@@ -49,7 +49,6 @@ class AboutFragListViewModel @Inject constructor(
                 Observable.just(dbCountryInfoList)
             else
                 apiService.getCountryPosts().map {
-                    appBarTitle.value = it.title
                     it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
                 }.concatMap { apiList ->
                     countryInfoDao.deleteAll()
@@ -85,7 +84,7 @@ class AboutFragListViewModel @Inject constructor(
 
     private fun onRetrieveCounryListSuccess(postList: List<Row>) {
         aboutRecyclerAdapter.setCountryInfo(postList)
-        //appBarTitle.value = "About Canada"
+        appBarTitle.value = "About Canada"
     }
 
     private fun onRetrievePostListError() {
