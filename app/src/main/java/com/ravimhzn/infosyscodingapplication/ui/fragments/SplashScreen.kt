@@ -43,7 +43,7 @@ class SplashScreen : BaseFragment() {
     }
 
     /**
-     * Normally we would load configuration on Splash and navigate accoringly.
+     * Usually we would load configuration on Splash and navigate accoringly.
      * In this case, I'm just playing the animation first and start observing
      */
     private fun lottieAnimation() {

@@ -13,6 +13,4 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAboutFrag(): AboutFrag
-
-
 }

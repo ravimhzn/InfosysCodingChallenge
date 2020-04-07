@@ -8,6 +8,7 @@ import com.ravimhzn.infosyscodingapplication.network.ApiService
 import com.ravimhzn.infosyscodingapplication.persistence.CountryInfoDao
 import com.ravimhzn.infosyscodingapplication.ui.adapter.AboutRecyclerAdapter
 import com.ravimhzn.infosyscodingapplication.ui.model.Row
+import com.ravimhzn.infosyscodingapplication.utils.NetworkUtil
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 class AboutFragListViewModel @Inject constructor(
     private val countryInfoDao: CountryInfoDao,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val networkUtil: NetworkUtil
 ) :
     ViewModel() {
 
@@ -24,10 +26,14 @@ class AboutFragListViewModel @Inject constructor(
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { loadData() }
+    val appBarTitle: MutableLiveData<String> = MutableLiveData()
+    val errorClickListener = View.OnClickListener { }
     private lateinit var subscription: Disposable
 
     init {
+        if (!isInternetConnected()) {
+            errorMessage.value = R.string.no_connection
+        }
         loadData()
     }
 
@@ -36,24 +42,26 @@ class AboutFragListViewModel @Inject constructor(
      * otherwise it will load data from api service
      */
     private fun loadData() {
-        subscription = Observable.fromCallable { countryInfoDao.getCountryDetailsFromDb }
-            .concatMap { dbCountryInfoList ->
-                if (dbCountryInfoList.isEmpty())
-                    apiService.getCountryPosts().map {
-                        it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
-                    }.concatMap { apiList ->
-                        countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
-                        Observable.just(apiList)
-                    }
-                else
-                    Observable.just(dbCountryInfoList)
-            }
+        subscription = Observable.fromCallable {
+            countryInfoDao.getCountryDetailsFromDb
+        }.concatMap { dbCountryInfoList ->
+            if (!isInternetConnected())
+                Observable.just(dbCountryInfoList)
+            else
+                apiService.getCountryPosts().map {
+                    it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
+                }.concatMap { apiList ->
+                    countryInfoDao.deleteAll()
+                    countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
+                    Observable.just(apiList)
+                }
+        }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { onRetrievePostListStart() }
-            .doOnTerminate { onRetrievePostListFinish() }
+            .doOnSubscribe { onRetrieveCountryListStart() }
+            .doOnTerminate { onRetrieveCountryListFinish() }
             .subscribe(
-                { result -> onRetrievePostListSuccess(result as List<Row>) },
+                { result -> onRetrieveCounryListSuccess(result as List<Row>) },
                 { onRetrievePostListError() }
             )
     }
@@ -61,21 +69,22 @@ class AboutFragListViewModel @Inject constructor(
     /**
      * Filtering list. Checking if there are null
      */
-    private fun checkIfValuesNotNull(it: Row): Boolean {
+    fun checkIfValuesNotNull(it: Row): Boolean {
         return it?.title != null && it?.description != null && it?.imageHref != null
     }
 
-    private fun onRetrievePostListStart() {
+    private fun onRetrieveCountryListStart() {
         loadingVisibility.value = View.VISIBLE
         errorMessage.value = null
     }
 
-    private fun onRetrievePostListFinish() {
+    private fun onRetrieveCountryListFinish() {
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrievePostListSuccess(postList: List<Row>) {
+    private fun onRetrieveCounryListSuccess(postList: List<Row>) {
         aboutRecyclerAdapter.setCountryInfo(postList)
+        appBarTitle.value = "About Canada"
     }
 
     private fun onRetrievePostListError() {
@@ -87,4 +96,12 @@ class AboutFragListViewModel @Inject constructor(
         subscription.dispose()
     }
 
+    /**
+     * Check if the device has an internet connection.
+     *
+     * @return true if device is connected to internet. Otherwise false.
+     */
+    fun isInternetConnected(): Boolean {
+        return networkUtil.isInternetAvailable()
+    }
 }

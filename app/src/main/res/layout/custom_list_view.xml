@@ -17,7 +17,8 @@
         android:layout_marginTop="@dimen/small_dimen"
         android:layout_marginRight="@dimen/small_dimen"
         android:background="@color/white"
-        android:elevation="5dp">
+        android:elevation="5dp"
+        android:paddingBottom="@dimen/small_dimen">
 
         <TextView
             android:id="@+id/tvTitle"
