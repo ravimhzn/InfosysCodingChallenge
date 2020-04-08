@@ -65,3 +65,6 @@ MVVM stands for “Model View ViewModel”. The main advatage of using MVVM, the
  - Continuous integration (_Setup basic integration, it runs static analysis tools, unit tests, and assembles builds. Was thinking to run UI tests as well, but the setup is a little bit tricky and due to time constraints, have to postpone the idea_)
     * [Travis CI](https://travis-ci.org/)
  - Add more description fragment
+ 
+  ## Note:
+  Please note that some of the imageUrl doesn't work even though it's not nullOrEmpty. 
