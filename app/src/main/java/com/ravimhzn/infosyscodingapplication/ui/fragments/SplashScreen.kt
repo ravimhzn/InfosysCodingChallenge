@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ravimhzn.infosyscodingapplication.R
-import com.ravimhzn.infosyscodingapplication.extension.navigate
+import com.ravimhzn.infosyscodingapplication.utils.extension.navigate
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.SplashScreenViewModel
 import com.ravimhzn.infosyscodingapplication.utils.data.EventObserver
 import com.ravimhzn.openweatherapp.modules.BaseFragment

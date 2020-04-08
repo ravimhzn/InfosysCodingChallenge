@@ -1,4 +1,4 @@
-package com.ravimhzn.infosyscodingapplication.extension
+package com.ravimhzn.infosyscodingapplication.utils.extension
 
 import okhttp3.Request
 import retrofit2.Response

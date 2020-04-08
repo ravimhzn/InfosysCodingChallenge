@@ -63,7 +63,6 @@ class AboutFragListViewModel @Inject constructor(
             )
     }
 
-
     /**
      * Save data from server to Room Table
      */
@@ -71,10 +70,15 @@ class AboutFragListViewModel @Inject constructor(
         return apiService.getCountryPosts().map {
             it.rows?.filter { it?.let { it1 -> checkIfValuesNotNull(it1) }!! }
         }.concatMap { apiList ->
-            countryInfoDao.deleteAll()
-            countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
+            insertIntoDb(apiList)
             Observable.just(apiList)
+
         }
+    }
+
+    private fun insertIntoDb(apiList: List<Row?>) {
+        countryInfoDao.deleteAll()
+        countryInfoDao.insertIntoDbCountryDetails(*apiList.toTypedArray())
     }
 
     /**

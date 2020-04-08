@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.ravimhzn.infosyscodingapplication.ui.model.Row
 import com.ravimhzn.infosyscodingapplication.utils.NetworkUtil
+import io.reactivex.subscribers.TestSubscriber
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -71,5 +72,15 @@ class AboutFragListViewModelTest {
         var r = Row(0, "description", "imageHref", "title")
         var result = viewModel.checkIfValuesNotNull(r)
         assertTrue(result)
+    }
+
+    //getInfoListFromServer
+    @Test
+    fun getInfoListFromServer(){
+//        var t = TestSubscriber<>()
+//        TestSubscriber<User> testSubscriber = new TestSubscriber<>();
+//        databaseHelper.loadUser().subscribe(testSubscriber);
+//        testSubscriber.assertNoErrors();
+//        testSubscriber.assertReceivedOnNext(Arrays.asList(user1, user2))
     }
 }

@@ -1,4 +1,4 @@
-package com.ravimhzn.infosyscodingapplication.extension
+package com.ravimhzn.infosyscodingapplication.utils.extension
 
 import android.view.LayoutInflater
 import android.view.View

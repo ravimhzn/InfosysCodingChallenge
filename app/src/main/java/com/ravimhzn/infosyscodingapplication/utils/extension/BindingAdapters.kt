@@ -1,4 +1,4 @@
-package com.ravimhzn.infosyscodingapplication.extension
+package com.ravimhzn.infosyscodingapplication.utils.extension
 
 import android.view.View
 import android.widget.TextView

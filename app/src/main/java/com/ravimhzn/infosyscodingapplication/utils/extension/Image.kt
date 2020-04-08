@@ -1,4 +1,4 @@
-package com.ravimhzn.infosyscodingapplication.extension
+package com.ravimhzn.infosyscodingapplication.utils.extension
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

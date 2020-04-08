@@ -3,7 +3,7 @@ package com.ravimhzn.infosyscodingapplication.utils.data
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonSyntaxException
 import com.ravimhzn.infosyscodingapplication.R
-import com.ravimhzn.infosyscodingapplication.extension.fullErrorMessage
+import com.ravimhzn.infosyscodingapplication.utils.extension.fullErrorMessage
 import com.ravimhzn.infosyscodingapplication.utils.Logger
 import retrofit2.Call
 import retrofit2.Callback

@@ -1,8 +1,10 @@
 package com.ravimhzn.infosyscodingapplication.ui.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 import org.jetbrains.annotations.NotNull
 
 data class CountryInfo(
@@ -10,6 +12,7 @@ data class CountryInfo(
     val title: String? = null
 )
 
+@Parcelize
 @Entity(tableName = "country_details")
 data class Row(
     @PrimaryKey(autoGenerate = true)
@@ -26,4 +29,4 @@ data class Row(
     @NotNull
     @ColumnInfo(name = "title")
     val title: String? = null
-)
+): Parcelable
