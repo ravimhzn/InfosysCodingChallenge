@@ -16,10 +16,23 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/splashScreen"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splashScreen_to_countryList3"
+            app:destination="@id/countryList3"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashScreen"
+            app:popUpToInclusive="true" />
+
+
     </fragment>
     <fragment
         android:id="@+id/aboutFrag"
         android:name="com.ravimhzn.infosyscodingapplication.ui.fragments.AboutFrag"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/countryList3"
+        android:name="com.ravimhzn.infosyscodingapplication.ui.fragments.CountryList"
+        android:label="CountryList" />
 </navigation>

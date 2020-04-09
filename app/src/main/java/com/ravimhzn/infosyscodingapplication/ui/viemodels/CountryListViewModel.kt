@@ -1,34 +1,67 @@
 package com.ravimhzn.infosyscodingapplication.ui.viemodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
-import com.ravimhzn.infosyscodingapplication.ui.model.Resource
+import android.content.Context
+import android.view.View
+import androidx.lifecycle.*
+import com.ravimhzn.infosyscodingapplication.ui.adapter.AboutRecyclerAdapter
+import com.ravimhzn.infosyscodingapplication.ui.model.CountryInfo
 import com.ravimhzn.infosyscodingapplication.ui.model.Row
-import com.ravimhzn.infosyscodingapplication.ui.repo.CountryDataSource
-import com.ravimhzn.infosyscodingapplication.utils.data.AbsentLiveData
+import com.ravimhzn.infosyscodingapplication.ui.repo.CountryListRepository
+import com.ravimhzn.infosyscodingapplication.utils.data.Result
+import com.ravimhzn.infosyscodingapplication.utils.data.map
 import javax.inject.Inject
 
-class CountryListViewModel @Inject constructor(private val countryDataSource: CountryDataSource) :
+
+class CountryListViewModel @Inject constructor(
+    private val countryListRepository: CountryListRepository,
+    private val context: Context
+) :
     ViewModel() {
 
-    lateinit var rowListLiveData: LiveData<Resource<List<Row>>>
-    private var isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val aboutRecyclerAdapter: AboutRecyclerAdapter = AboutRecyclerAdapter()
+    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    val errorMessage: MutableLiveData<Int> = MutableLiveData()
+    val appBarTitle: MutableLiveData<String> = MutableLiveData()
+    val errorClickListener = View.OnClickListener { }
+
+    private val _countryListMediatorLiveData: MediatorLiveData<Result<CountryInfo>> =
+        MediatorLiveData()
+    val getCountryInforResult: LiveData<Result<CountryInfo>>
+        get() = _countryListMediatorLiveData
 
     init {
+        println("debug -> Init Called")
         loadData()
+        listenForGetCountry()
     }
 
-    private fun loadData() {
-        rowListLiveData = isRefreshingLiveData.switchMap {
-            isRefreshingLiveData.value?.let { countryDataSource.loadInformation(it) }
-                ?: AbsentLiveData.create()
+    private fun listenForGetCountry() {
+        getCountryInforResult.observeForever {
+            it.map {
+                println("debug -> TEST:: $it")
+            }
         }
     }
 
-    fun refreshCountryInformation(isrefresh: Boolean) = isRefreshingLiveData.postValue(isrefresh)
+    private fun loadData() {
+        _countryListMediatorLiveData.addSource(getDataFromServer()) {
+            it.map {
+                _countryListMediatorLiveData.value = Result.Success(it)
+            }
+        }
+    }
 
-    fun getCountryInfoListValues() = rowListLiveData.value
+    private fun getDataFromServer(): LiveData<Result<CountryInfo>> {
+        var a = countryListRepository.getDataFromServer().map {
+            println(it.map {
+                println("debug -> $it")
+            })
+        }
+        return countryListRepository.getDataFromServer()
+    }
 
+    fun onGetDataFromServerSuccess(countryInfo: CountryInfo) {
+        aboutRecyclerAdapter.setCountryInfo(countryInfo.rows as List<Row>)
+        appBarTitle.value = countryInfo.title
+    }
 }

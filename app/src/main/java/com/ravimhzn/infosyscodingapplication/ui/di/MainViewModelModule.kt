@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.ravimhzn.infosyscodingapplication.di.ViewModelKey
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutFragListViewModel
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.AboutRecyclerAdapterViewModel
+import com.ravimhzn.infosyscodingapplication.ui.viemodels.CountryListViewModel
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.SplashScreenViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,6 +17,11 @@ abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(SplashScreenViewModel::class)
     abstract fun bindSplashViewModel(splashScreenViewModel: SplashScreenViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CountryListViewModel::class)
+    abstract fun bindCountryListViewModel(countryListViewModel: CountryListViewModel): ViewModel
 
     @Binds
     @IntoMap

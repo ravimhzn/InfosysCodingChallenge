@@ -9,9 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ravimhzn.infosyscodingapplication.R
-import com.ravimhzn.infosyscodingapplication.utils.extension.navigate
 import com.ravimhzn.infosyscodingapplication.ui.viemodels.SplashScreenViewModel
 import com.ravimhzn.infosyscodingapplication.utils.data.EventObserver
+import com.ravimhzn.infosyscodingapplication.utils.extension.navigate
 import com.ravimhzn.openweatherapp.modules.BaseFragment
 import kotlinx.android.synthetic.main.fragment_splash_screen.*
 import javax.inject.Inject
@@ -84,9 +84,8 @@ class SplashScreen : BaseFragment() {
     private fun navigateToAboutFrag(status: Boolean) {
         //TODO(Backstack not cleared -> Bug)
         navigate(
-            actionId = R.id.action_splashScreen_to_aboutFrag,
+            actionId = R.id.action_splashScreen_to_countryList3,
             bundle = AboutFrag.toBundle(status)
         )
-
     }
 }

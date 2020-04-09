@@ -1,6 +1,7 @@
 package com.ravimhzn.infosyscodingapplication.ui.di
 
 import com.ravimhzn.infosyscodingapplication.ui.fragments.AboutFrag
+import com.ravimhzn.infosyscodingapplication.ui.fragments.CountryList
 import com.ravimhzn.infosyscodingapplication.ui.fragments.SplashScreen
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -13,4 +14,7 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAboutFrag(): AboutFrag
+
+    @ContributesAndroidInjector
+    abstract fun contributeCountryList(): CountryList
 }

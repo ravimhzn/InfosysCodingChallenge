@@ -1,20 +1,26 @@
 package com.ravimhzn.infosyscodingapplication.ui.repo
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ravimhzn.infosyscodingapplication.network.ApiService
 import com.ravimhzn.infosyscodingapplication.ui.model.CountryInfo
-import com.ravimhzn.infosyscodingapplication.ui.model.Resource
-import com.ravimhzn.infosyscodingapplication.ui.model.Row
+import com.ravimhzn.infosyscodingapplication.utils.data.GeneralCallback
+import com.ravimhzn.infosyscodingapplication.utils.data.Result
 import javax.inject.Inject
 
 class CountryRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) : CountryDataSource {
 
+    override fun getDataFromServer(): LiveData<Result<CountryInfo>> {
+        val resultLiveData = MutableLiveData<Result<CountryInfo>>()
+        resultLiveData.value = Result.Loading
 
-    override fun loadInformation(isrefresh: Boolean): LiveData<Resource<List<Row>>> {
-        TODO()
+        apiService.getCountryInfo().enqueue(
+            GeneralCallback<CountryInfo, CountryInfo>(resultLiveData) {
+                it
+            }
+        )
+        return resultLiveData
     }
-
-
 }
