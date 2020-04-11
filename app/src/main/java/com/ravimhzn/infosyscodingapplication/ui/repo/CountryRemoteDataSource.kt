@@ -12,7 +12,7 @@ class CountryRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) : CountryDataSource {
 
-    override fun getDataFromServer(): LiveData<Result<CountryInfo>> {
+    override fun getDataFromServerOrDB(): LiveData<Result<CountryInfo>> {
         val resultLiveData = MutableLiveData<Result<CountryInfo>>()
         resultLiveData.value = Result.Loading
 

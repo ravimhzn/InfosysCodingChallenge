@@ -8,5 +8,5 @@ import com.ravimhzn.infosyscodingapplication.utils.data.Result
  * Implementation with LiveData and Datasource
  */
 interface CountryDataSource {
-    fun getDataFromServer(): LiveData<Result<CountryInfo>>
+    fun getDataFromServerOrDB(): LiveData<Result<CountryInfo>>
 }

@@ -31,14 +31,3 @@ fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
         text.observe(parentActivity, Observer { value -> view.text = value ?: "" })
     }
 }
-
-
-//@BindingAdapter("imageUrl")
-//fun loadImage(
-//    view: ImageView,
-//    url: String?
-//) {
-//    if (!url.isNullOrEmpty()) {
-//        Glide.with(view.context).load(url).into(view)
-//    }
-//}

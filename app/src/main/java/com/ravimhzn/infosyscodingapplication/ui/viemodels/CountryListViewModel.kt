@@ -2,7 +2,10 @@ package com.ravimhzn.infosyscodingapplication.ui.viemodels
 
 import android.content.Context
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.ravimhzn.infosyscodingapplication.ui.adapter.AboutRecyclerAdapter
 import com.ravimhzn.infosyscodingapplication.ui.model.CountryInfo
 import com.ravimhzn.infosyscodingapplication.ui.model.Row
@@ -29,39 +32,42 @@ class CountryListViewModel @Inject constructor(
     val getCountryInforResult: LiveData<Result<CountryInfo>>
         get() = _countryListMediatorLiveData
 
+    private val _connectionErrorMessage: MutableLiveData<Boolean> = MutableLiveData()
+    val connectionErrorMessage: LiveData<Boolean>
+        get() = _connectionErrorMessage
+
+    private val isRefreshed = MutableLiveData<Boolean>()
+
     init {
-        println("debug -> Init Called")
         loadData()
-        listenForGetCountry()
+        observeForever()
     }
 
-    private fun listenForGetCountry() {
+    private fun observeForever() {
         getCountryInforResult.observeForever {
             it.map {
-                println("debug -> TEST:: $it")
+                onGetDataFromServerSuccess(it)
             }
         }
     }
 
     private fun loadData() {
-        _countryListMediatorLiveData.addSource(getDataFromServer()) {
+        _countryListMediatorLiveData.addSource(countryListRepository.getDataFromServerOrDB()) {
             it.map {
                 _countryListMediatorLiveData.value = Result.Success(it)
             }
         }
     }
 
-    private fun getDataFromServer(): LiveData<Result<CountryInfo>> {
-        var a = countryListRepository.getDataFromServer().map {
-            println(it.map {
-                println("debug -> $it")
-            })
-        }
-        return countryListRepository.getDataFromServer()
-    }
-
-    fun onGetDataFromServerSuccess(countryInfo: CountryInfo) {
+    private fun onGetDataFromServerSuccess(countryInfo: CountryInfo) {
         aboutRecyclerAdapter.setCountryInfo(countryInfo.rows as List<Row>)
         appBarTitle.value = countryInfo.title
+    }
+
+    fun isRefresh(isRefreshed: Boolean) = apply { this.isRefreshed.value = isRefreshed }
+
+    override fun onCleared() {
+        super.onCleared()
+        _countryListMediatorLiveData.removeSource(getCountryInforResult)
     }
 }

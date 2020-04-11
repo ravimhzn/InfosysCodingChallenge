@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CountryListRepository @Inject constructor(private val countryDataSource: CountryDataSource) :
     CountryDataSource {
-    override fun getDataFromServer(): LiveData<Result<CountryInfo>> {
-        return countryDataSource.getDataFromServer()
+    override fun getDataFromServerOrDB(): LiveData<Result<CountryInfo>> {
+        return countryDataSource.getDataFromServerOrDB()
     }
 }
